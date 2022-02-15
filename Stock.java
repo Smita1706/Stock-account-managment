@@ -1,18 +1,16 @@
 package com.bridgelabz.stockAccount;
 
 public class Stock {
-	String shareName;
-	int numOfShares;
-	int sharePrice;
-	int stockValue = 0;
-	static int totalStocksValue = 0;
-	
+	private  String shareName;
+	private int numOfShares;
+	private  int sharePrice;
+	int numOfStocks;
+
 	public Stock(String name, int shareNum, int price) {
 		this.shareName = name;
 		this.numOfShares = shareNum;
 		this.sharePrice = price;
 	}
-	
 	public String getShareName() {
 		return shareName;
 	}
@@ -36,35 +34,16 @@ public class Stock {
 	public void setSharePrice(int sharePrice) {
 		this.sharePrice = sharePrice;
 	}
-
-	public int getStockValue() {
-		return stockValue;
-	}
-
-	public void setStockValue(int stockValue) {
-		this.stockValue = stockValue;
-	}
-
-	public static int getTotalStocksValue() {
-		return totalStocksValue;
-	}
-
-	public static void setTotalStocksValue(int totalStocksValue) {
-		Stock.totalStocksValue = totalStocksValue;
-	}
-
-	public int stockValue() {
-		stockValue = sharePrice * numOfShares;
-		return stockValue;
-	}
-	public int totalStocksValue() {
-		totalStocksValue = stockValue + totalStocksValue;
-		return totalStocksValue;
-	}
-
-	@Override
+		
 	public String toString() {
-		return "Stock [Share Name : " + shareName + ", Num Of Shares : " + numOfShares + ", Share Price : " + sharePrice
-				+ ", Stock Value : " + stockValue + ", Sotal Stocks Value : " + totalStocksValue + "]";
+		return "\nShare Name : "+shareName + 
+				"\nNum Of Shares : " + numOfShares + 
+				"\nShare Price : " + sharePrice ;
+	}
+
+	public static void main(String[] args) {
+		Stock s = new Stock("s",1,2);
+		s.toString();
+
 	}
 }
