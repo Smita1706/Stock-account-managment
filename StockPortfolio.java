@@ -4,80 +4,85 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class StockPortfolio {
+	static ArrayList<Stock> stocksArray = new ArrayList<Stock>(); 
+	Scanner s = new Scanner(System.in);
+	public void getData() {
+		System.out.println("Please enter the details of the stock ");
+		System.out.println("Please enter the share name : ");
+		String name = s.next();
 
-	static int numOfStocks;
-	static ArrayList<Stock> stocksArray = new ArrayList<Stock>();
+		System.out.println("Please enter the number of shares of share " + name + " :");
+		int num = s.nextInt();
 
-	public static void stockPortfolio() {
+		System.out.println("Please enter the price of the share " + name + " per one share: ");
+		int price = s.nextInt();
+		Stock stock = new Stock(name,num,price);
+		stocksArray.add(stock);
+		System.out.println("\nStock is added Successfully.");			
+	}
 
-		Account account = new Account();
-		StockAccount stockAcc = new StockAccount();
-
-		Scanner sc = new Scanner(System.in);
-
-		for(int i=0; i<numOfStocks; i++)
-		{
-			int stockNum = i;
-			System.out.println("Stock " +(++stockNum));
-			System.out.println("Please enter the share name: ");
-			String name = sc.next();
-
-			System.out.println("Please enter the number of shares to be bought of the selected stock: ");
-			int num = sc.nextInt();
-
-			System.out.println("Please enter the price of the shares to be bought: ");
-			int price = sc.nextInt();
-
-			Stock stock = new Stock(name, num, price);
-			stocksArray.add(stock);
-			stock.stockValue();
-			stock.totalStocksValue();
-
-			stockAcc.buy(num, name);
-			stockAcc.CompanyShares.add(stockAcc);
-
+	public void getMultipleData(int noOfStocks) {
+		int i;
+		StockPortfolio port = new StockPortfolio();
+		for(i=0;i<noOfStocks;i++) {
+			System.out.println((i+1)+"Stock");
+			port.getData();
 		}
+	}
 
-		account.debit(Stock.totalStocksValue);
-
-		System.out.println(stocksArray);
-		System.out.println(StockAccount.CompanyShares);
-
-		System.out.println("Press 1 to sell a share or 2 to print report");
-		int Num = sc.nextInt();
-		if(Num == 1)
-		{
-			System.out.println("Please enter the stock name to be sold: ");
-			String shareName = sc.next();
-
-			System.out.println("Please enter how many shares are to be sold of the selected stock: ");
-			int numOfShares = sc.nextInt();
-
-			stockAcc.sell(numOfShares, shareName);
-			System.out.println(StockAccount.CompanyShares);
-
-			for(int i=0;i<stocksArray.size(); i++) {
-				String sellingSymbol = stocksArray.get(i).getShareName();
-				if(shareName.equals(sellingSymbol)) {
-					int creditAmount = numOfShares*stocksArray.get(i).getSharePrice();	
-					account.credit(creditAmount);
-				}
-			}
+	public void printReport() {
+		int i;
+		System.out.println("Stocks present in Stock array is : ");
+		for(i = 0 ; i < stocksArray.size() ; i++) {
+			System.out.println(stocksArray.get(i));
 		}
-		if(Num==2)
-		{
-			stockAcc.printReport();
-		}
+	}
 
+	public static int totalStocksValue() {
+		int totalStockValue = 0;
+		for(int i =0 ;i<stocksArray.size();i++) {
+			totalStockValue += stocksArray.get(i).getNumOfShares() * stocksArray.get(i).getSharePrice();
+		}
+		return totalStockValue;
 	}
 
 	public static void main(String[] args) {
 		Scanner s = new Scanner(System.in);
-
-		System.out.println("Number of stocks to buy: ");
-		numOfStocks = s.nextInt();
-
-		stockPortfolio();		
-
+		StockPortfolio port = new StockPortfolio();
+		int noOfStocks ;
+		int ans ;
+		do {
+			System.out.println("Enter choice : ");
+			System.out.println("1.Add single stock ");
+			System.out.println("2.Add multiple stock ");
+			System.out.println("3.Print the report ");
+			System.out.println("4.Exit");
+			int ch = s.nextInt();
+			switch(ch) {
+			case 1:
+				port.getData();
+				break;
+			case 2:
+				System.out.println("How many stocks you want to add? ");
+				noOfStocks = s.nextInt();
+				port.getMultipleData(noOfStocks);
+				break;
+			case 3:
+				System.out.println("Enter the amount you want to credit : ");
+				port.printReport();
+				System.out.println("\nTotal stock : "+totalStocksValue());
+				break;
+			case 4:
+				System.out.println("Exited succesfully");
+				break;
+			default:
+				System.out.println("Please enter valid choise");
+			}
+			if(ch == 4)
+				break;
+			System.out.println("If you want to continue then press 1 else press 0 ");
+			ans = s.nextInt();
+		}while(ans == 1);
 	}
+
 }
